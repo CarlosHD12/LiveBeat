@@ -64,4 +64,24 @@ public class OrganizadorIMPL implements OrganizadorService {
     public List<HU16DTO> hu16DTO(Long idArtista) {
         return organizadorRepos.hu16DTO(idArtista);
     }
+
+    @Override
+    public OrganizadorDTO actualizarOrganizador(Long id, OrganizadorDTO organizadorDTO) {
+        Organizador organizador = organizadorRepos.findById(id)
+                .orElseThrow(() -> new RuntimeException("Organizador no encontrado con ID: " + id));
+
+        organizador.setNombreOrganizador(organizadorDTO.getNombreOrganizador());
+        organizador.setDireccion(organizadorDTO.getDireccion());
+        organizador.setOrganizacion(organizadorDTO.getOrganizacion());
+
+        Organizador actualizado = organizadorRepos.save(organizador);
+
+        OrganizadorDTO dto = new OrganizadorDTO();
+        dto.setIdO(actualizado.getIdO());
+        dto.setNombreOrganizador(actualizado.getNombreOrganizador());
+        dto.setDireccion(actualizado.getDireccion());
+        dto.setOrganizacion(actualizado.getOrganizacion());
+
+        return dto;
+    }
 }

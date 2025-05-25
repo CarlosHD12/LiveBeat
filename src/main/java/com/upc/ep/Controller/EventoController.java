@@ -5,11 +5,10 @@ import com.upc.ep.Entidad.Evento;
 import com.upc.ep.Services.EventoService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/LiveBeat")
@@ -26,5 +25,12 @@ public class EventoController {
         Evento evento = modelMapper.map(eventoDTO, Evento.class);
         evento = eventoService.saveE(evento);
         return modelMapper.map(evento, EventoDTO.class);
+    }
+
+    @PutMapping("/organizador/modificar/evento/{id}")
+    @PreAuthorize("hasRole('ORGANIZADOR')")
+    public ResponseEntity<EventoDTO> actualizarEvento(@PathVariable Long id, @RequestBody EventoDTO eventoDTO) {
+        EventoDTO actualizado = eventoService.actualizarEvento(id, eventoDTO);
+        return new ResponseEntity<>(actualizado, HttpStatus.OK);
     }
 }

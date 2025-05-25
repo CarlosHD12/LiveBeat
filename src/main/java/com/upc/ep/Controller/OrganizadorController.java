@@ -6,6 +6,8 @@ import com.upc.ep.Services.OrganizadorService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -83,5 +85,12 @@ public class OrganizadorController {
     @PreAuthorize("hasRole('ORGANIZADOR')")
     public List<HU16DTO> hu16DTO(@PathVariable("idArtista") Long idArtista){
         return organizadorService.hu16DTO(idArtista);
+    }
+
+    @PutMapping("/organizador/modificar/{id}")
+    @PreAuthorize("hasRole('ORGANIZADOR')")
+    public ResponseEntity<OrganizadorDTO> actualizarOrganizador(@PathVariable Long id, @RequestBody OrganizadorDTO organizadorDTO) {
+        OrganizadorDTO actualizado = organizadorService.actualizarOrganizador(id, organizadorDTO);
+        return new ResponseEntity<>(actualizado, HttpStatus.OK);
     }
 }

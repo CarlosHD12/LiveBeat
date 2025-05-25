@@ -17,4 +17,5 @@ public interface OrganizadorService {
     public List<HU14DTO> hu14DTO(Long idContrato);
     public List<HU15DTO> hu15DTO();
     public List<HU16DTO> hu16DTO(Long idArtista);
+    OrganizadorDTO actualizarOrganizador(Long id, OrganizadorDTO organizadorDTO);
 }
