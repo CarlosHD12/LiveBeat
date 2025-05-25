@@ -1,12 +1,11 @@
 package com.upc.ep.Controller;
 
-import com.upc.ep.DTO.HU07DTO;
-import com.upc.ep.DTO.HU16DTO;
-import com.upc.ep.DTO.OrganizadorDTO;
+import com.upc.ep.DTO.*;
 import com.upc.ep.Entidad.Organizador;
 import com.upc.ep.Services.OrganizadorService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,6 +34,51 @@ public class OrganizadorController {
     public List<HU07DTO> hu07DTO(@PathVariable("Genero") String Genero){
         return organizadorService.hu07DTO(Genero);
     }
+
+    @GetMapping("/organizador/HU09")
+    @PreAuthorize("hasRole('ORGANIZADOR')")
+    public List<HU09DTO> hu09DTO(){
+        return organizadorService.hu09DTO();
+    }
+
+    @GetMapping("/organizador/HU10/{Fecha}")
+    @PreAuthorize("hasRole('ORGANIZADOR')")
+    public List<HU10DTO> hu10DTO(@PathVariable("Fecha") LocalDate Fecha){
+        return organizadorService.hu10DTO(Fecha);
+    }
+
+    @GetMapping("/organizador/HU11/{idOrganizador}")
+    @PreAuthorize("hasRole('ORGANIZADOR')")
+    public List<HU11DTO> hu11DTO(@PathVariable("idOrganizador") Long idOrganizador){
+        return organizadorService.hu11DTO(idOrganizador);
+    }
+
+    @GetMapping("/organizador/HU12")
+    @PreAuthorize("hasRole('ORGANIZADOR')")
+    public List<HU12DTO> hu12DTO(
+            @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+        return organizadorService.hu12DTO(startDate, endDate);
+    }
+
+    @GetMapping("/organizador/HU13/{idEvento}")
+    @PreAuthorize("hasRole('ORGANIZADOR')")
+    public List<HU13DTO> hu13DTO(@PathVariable("idEvento") Long idEvento){
+        return organizadorService.hu13DTO(idEvento);
+    }
+
+    @GetMapping("/organizador/HU14/{idContrato}")
+    @PreAuthorize("hasRole('ORGANIZADOR')")
+    public List<HU14DTO> hu14DTO(@PathVariable("idContrato") Long idContrato){
+        return organizadorService.hu14DTO(idContrato);
+    }
+
+    @GetMapping("/organizador/HU15")
+    @PreAuthorize("hasRole('ORGANIZADOR')")
+    public List<HU15DTO> hu15DTO(){
+        return organizadorService.hu15DTO();
+    }
+
     @GetMapping("/organizador/HU16/{idArtista}")
     @PreAuthorize("hasRole('ORGANIZADOR')")
     public List<HU16DTO> hu16DTO(@PathVariable("idArtista") Long idArtista){

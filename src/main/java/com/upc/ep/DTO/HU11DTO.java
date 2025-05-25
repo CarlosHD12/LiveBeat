@@ -1,0 +1,20 @@
+package com.upc.ep.DTO;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.time.LocalDate;
+
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+public class HU11DTO {
+    private Long idO;
+    private Long idCo;
+    private Boolean estado;
+    private LocalDate fechaContrato;
+    private Double montoTotal;
+}
