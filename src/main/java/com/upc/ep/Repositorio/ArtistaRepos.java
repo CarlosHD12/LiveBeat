@@ -16,8 +16,11 @@ public interface ArtistaRepos extends JpaRepository<Artista, Long> {
             "ORDER BY h.contrato.montoTotal, h.contrato.fechaContrato,h.contrato.evento.nombreEvento")
     List<HU22DTO> hu22DTO(@Param("idArtista") Long idArtista);
 
-    //Como Artista quiero ver mis canciones ordenadas de mayor a menor por su duracion y
-    @Query("SELECT NEW com.upc.ep.DTO.HU23DTO(c.artista.nombreArtista, c.titulo, c.duracion) " +
+    @Query("SELECT DISTINCT a.genero FROM Artista a ORDER BY a.genero")
+    List<String> findDistinctGeneros();
+
+    //Como Artista quiero ver mis canciones ordenadas de mayor a menor por su duracion
+    @Query("SELECT NEW com.upc.ep.DTO.HU23DTO(c.titulo, c.duracion) " +
             "FROM Cancion c " +
             "WHERE c.artista.idA = :idArtista " +
             "ORDER BY c.duracion DESC, c.titulo")
@@ -26,13 +29,15 @@ public interface ArtistaRepos extends JpaRepository<Artista, Long> {
     //Como Artista quiero ver todas mis calificaciones
     @Query("SELECT NEW com.upc.ep.DTO.HU24DTO(ca.artista.idA, ca.organizador.nombreOrganizador, ca.comentario, ca.valoracion) " +
             "FROM Calificacion ca " +
-            "WHERE ca.artista.idA = :idArtista")
+            "WHERE ca.artista.idA = :idArtista " +
+            "ORDER BY ca.valoracion DESC, ca.organizador.nombreOrganizador")
     List<HU24DTO> hu24DTO(@Param("idArtista") Long idArtista);
 
-    //Como Artista quiero ver los eventos para poder registrarme
-    @Query("SELECT NEW com.upc.ep.DTO.HU25DTO(e.nombreEvento, e.organizador.direccion, e.fecha, e.tipoEvento) " +
-            "FROM Evento e " +
-            "ORDER BY e.nombreEvento, e.organizador.direccion, e.fecha, e.tipoEvento")
+    //Como Artista quiero ver los eventos disponibles para poder registrarme, estado = true
+    @Query("SELECT NEW com.upc.ep.DTO.HU25DTO(c.evento.nombreEvento, c.evento.organizador.direccion, c.evento.fecha, c.evento.tipoEvento) " +
+            "FROM Contrato c " +
+            "WHERE c.estado = true " +
+            "ORDER BY c.evento.nombreEvento, c.evento.organizador.direccion, c.evento.fecha, c.evento.tipoEvento")
     List<HU25DTO> hu25DTO();
 
     //Como Artista quiero ver el total que me han pagado en todos mis contratos con estado = true

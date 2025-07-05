@@ -11,18 +11,14 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
-//@CrossOrigin(origins = "${ip.frontend}")
 @CrossOrigin(origins = "${ip.frontend}", allowCredentials = "true", exposedHeaders = "Authorization") //para cloud
-//@CrossOrigin(origins = "*", allowedHeaders = "*", exposedHeaders = "Authorization")
 @RestController
+@RequestMapping("/LiveBeat")
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
@@ -56,7 +52,6 @@ public class AuthController {
         authResponseDTO.setJwt(token);
         return ResponseEntity.ok().headers(responseHeaders).body(authResponseDTO);
     }
-
 }
 
 

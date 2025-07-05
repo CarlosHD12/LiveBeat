@@ -31,7 +31,7 @@ public interface OrganizadorRepos extends JpaRepository<Organizador, Long> {
             "WHERE e.fecha = :Fecha")
     List<HU10DTO> hu10DTO(@Param("Fecha") LocalDate Fecha);
 
-    //Como organizador quiero ver contratos pendientes = true, dado como parametro el Id de un Organizador
+    //Como organizador quiero ver contratos pendientes = false, dado como parametro el Id de un Organizador
     @Query("SELECT NEW com.upc.ep.DTO.HU11DTO(co.evento.organizador.idO, co.idCo, co.estado, co.fechaContrato, co.montoTotal) " +
             "FROM Contrato co " +
             "WHERE co.estado = false AND co.evento.organizador.idO = :idOrganizador")
@@ -63,10 +63,4 @@ public interface OrganizadorRepos extends JpaRepository<Organizador, Long> {
             "GROUP BY ac.artista.idA, ac.artista.nombreArtista " +
             "ORDER BY COUNT(ac.contrato.idCo) DESC")
     List<HU15DTO> hu15DTO();
-
-    //Como Organizador quiero ver las canciones por Artista que tenga como parametro su ID del Artista
-    @Query("SELECT NEW com.upc.ep.DTO.HU16DTO(c.artista.idA, c.artista.nombreArtista, c.titulo) " +
-            "FROM Cancion c " +
-            "WHERE c.artista.idA = :idArtista")
-    List<HU16DTO> hu16DTO(@Param("idArtista") Long idArtista);
 }

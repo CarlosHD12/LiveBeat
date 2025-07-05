@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface OrganizadorService {
     public Organizador saveO(Organizador organizador);
+    public List<Organizador> listar();
     public List<HU07DTO> hu07DTO(String Genero);
     public List<HU09DTO> hu09DTO();
     public List<HU10DTO> hu10DTO(LocalDate Fecha);
@@ -16,6 +17,5 @@ public interface OrganizadorService {
     public List<HU13DTO> hu13DTO(Long idEvento);
     public List<HU14DTO> hu14DTO(Long idContrato);
     public List<HU15DTO> hu15DTO();
-    public List<HU16DTO> hu16DTO(Long idArtista);
     OrganizadorDTO actualizarOrganizador(Long id, OrganizadorDTO organizadorDTO);
 }

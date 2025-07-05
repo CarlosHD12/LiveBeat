@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface ArtistaService {
     public Artista saveA(Artista artista);
+    public List<Artista> listar();
+    public List<String> getListaDeGeneros();
     public List<HU22DTO> hu22DTO(Long idArtista);
     public List<HU23DTO> hu23DTO(Long idArtista);
     public List<HU24DTO> hu24DTO(Long idArtista);

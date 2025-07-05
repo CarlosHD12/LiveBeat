@@ -10,7 +10,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class HU23DTO {
-    private String nombreArtista;
     private String titulo;
     private Double duracion;
 }

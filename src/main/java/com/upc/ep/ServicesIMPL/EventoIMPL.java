@@ -8,6 +8,8 @@ import com.upc.ep.Services.EventoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class EventoIMPL implements EventoService {
     @Autowired
@@ -16,6 +18,11 @@ public class EventoIMPL implements EventoService {
     @Override
     public Evento saveE(Evento evento) {
         return eventoRepos.save(evento);
+    }
+
+    @Override
+    public List<Evento> listar() {
+        return eventoRepos.findAll();
     }
 
     @Override

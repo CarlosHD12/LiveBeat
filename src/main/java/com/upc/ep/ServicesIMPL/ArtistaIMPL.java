@@ -15,6 +15,16 @@ public class ArtistaIMPL implements ArtistaService {
     private ArtistaRepos artistaRepos;
 
     @Override
+    public List<Artista> listar() {
+        return artistaRepos.findAll();
+    }
+
+    @Override
+    public List<String> getListaDeGeneros() {
+        return artistaRepos.findDistinctGeneros();
+    }
+
+    @Override
     public Artista saveA(Artista artista) {
         return artistaRepos.save(artista);
     }

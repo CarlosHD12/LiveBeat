@@ -11,10 +11,18 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
 @RequestMapping("/LiveBeat")
+@CrossOrigin(
+        origins = "http://localhost:4200",
+        allowCredentials = "true",
+        exposedHeaders = "Authorization",
+        methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE},
+        allowedHeaders = "*"
+)
 public class ArtistaController {
     @Autowired
     private ArtistaService artistaService;
@@ -28,6 +36,22 @@ public class ArtistaController {
         Artista artista = modelMapper.map(artistaDTO, Artista.class);
         artista = artistaService.saveA(artista);
         return modelMapper.map(artista, ArtistaDTO.class);
+    }
+
+    @GetMapping("/artistas")
+    @PreAuthorize("hasRole('ARTISTA') or hasRole('ORGANIZADOR')")
+    public List<ArtistaDTO> listar() {
+        List<Artista> artistas = artistaService.listar();
+        ModelMapper modelMapper = new ModelMapper();
+        return artistas.stream()
+                .map(artista -> modelMapper.map(artista, ArtistaDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/generos")
+    @PreAuthorize("hasRole('ARTISTA') or hasRole('ORGANIZADOR')")
+    public List<String> getGeneros() {
+        return artistaService.getListaDeGeneros();
     }
 
     @GetMapping("/artista/HU22/{idArtista}")

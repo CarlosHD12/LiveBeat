@@ -21,6 +21,11 @@ public class OrganizadorIMPL implements OrganizadorService {
     }
 
     @Override
+    public List<Organizador> listar() {
+        return organizadorRepos.findAll();
+    }
+
+    @Override
     public List<HU07DTO> hu07DTO(String Genero) {
         return organizadorRepos.hu07DTO(Genero);
     }
@@ -58,11 +63,6 @@ public class OrganizadorIMPL implements OrganizadorService {
     @Override
     public List<HU15DTO> hu15DTO() {
         return organizadorRepos.hu15DTO();
-    }
-
-    @Override
-    public List<HU16DTO> hu16DTO(Long idArtista) {
-        return organizadorRepos.hu16DTO(idArtista);
     }
 
     @Override

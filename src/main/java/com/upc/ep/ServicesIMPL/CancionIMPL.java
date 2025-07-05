@@ -8,6 +8,8 @@ import com.upc.ep.Services.CancionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CancionIMPL implements CancionService {
     @Autowired
@@ -16,6 +18,11 @@ public class CancionIMPL implements CancionService {
     @Override
     public Cancion saveC(Cancion cancion) {
         return cancionRepos.save(cancion);
+    }
+
+    @Override
+    public List<Cancion> listarC() {
+        return cancionRepos.findAll();
     }
 
     @Override

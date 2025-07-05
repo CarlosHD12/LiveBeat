@@ -13,9 +13,17 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/LiveBeat")
+@CrossOrigin(
+        origins = "http://localhost:4200",
+        allowCredentials = "true",
+        exposedHeaders = "Authorization",
+        methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE},
+        allowedHeaders = "*"
+)
 public class OrganizadorController {
     @Autowired
     private OrganizadorService organizadorService;
@@ -31,8 +39,18 @@ public class OrganizadorController {
         return modelMapper.map(organizador, OrganizadorDTO.class);
     }
 
+    @GetMapping("/organizadores")
+    @PreAuthorize("hasRole('ARTISTA') or hasRole('ORGANIZADOR')")
+    public List<OrganizadorDTO> listar() {
+        List<Organizador> organizadores = organizadorService.listar();
+        ModelMapper modelMapper = new ModelMapper();
+        return organizadores.stream()
+                .map(organizador -> modelMapper.map(organizador, OrganizadorDTO.class))
+                .collect(Collectors.toList());
+    }
+
     @GetMapping("/organizador/HU07/{Genero}")
-    @PreAuthorize("hasRole('ORGANIZADOR')")
+    @PreAuthorize("hasRole('ARTISTA') or hasRole('ORGANIZADOR')")
     public List<HU07DTO> hu07DTO(@PathVariable("Genero") String Genero){
         return organizadorService.hu07DTO(Genero);
     }
@@ -79,12 +97,6 @@ public class OrganizadorController {
     @PreAuthorize("hasRole('ORGANIZADOR')")
     public List<HU15DTO> hu15DTO(){
         return organizadorService.hu15DTO();
-    }
-
-    @GetMapping("/organizador/HU16/{idArtista}")
-    @PreAuthorize("hasRole('ORGANIZADOR')")
-    public List<HU16DTO> hu16DTO(@PathVariable("idArtista") Long idArtista){
-        return organizadorService.hu16DTO(idArtista);
     }
 
     @PutMapping("/organizador/modificar/{id}")

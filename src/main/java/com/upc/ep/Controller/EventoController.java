@@ -10,8 +10,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/LiveBeat")
+@CrossOrigin(
+        origins = "http://localhost:4200",
+        allowCredentials = "true",
+        exposedHeaders = "Authorization",
+        methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE},
+        allowedHeaders = "*"
+)
 public class EventoController {
     @Autowired
     private EventoService eventoService;
@@ -25,6 +35,16 @@ public class EventoController {
         Evento evento = modelMapper.map(eventoDTO, Evento.class);
         evento = eventoService.saveE(evento);
         return modelMapper.map(evento, EventoDTO.class);
+    }
+
+    @GetMapping("/eventos")
+    @PreAuthorize("hasRole('ARTISTA') or hasRole('ORGANIZADOR')")
+    public List<EventoDTO> listar() {
+        List<Evento> eventos = eventoService.listar();
+        ModelMapper modelMapper = new ModelMapper();
+        return eventos.stream()
+                .map(evento -> modelMapper.map(evento, EventoDTO.class))
+                .collect(Collectors.toList());
     }
 
     @PutMapping("/organizador/modificar/evento/{id}")

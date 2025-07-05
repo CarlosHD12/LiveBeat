@@ -6,13 +6,20 @@ import com.upc.ep.Services.ContratoService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/LiveBeat")
+@CrossOrigin(
+        origins = "http://localhost:4200",
+        allowCredentials = "true",
+        exposedHeaders = "Authorization",
+        methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE},
+        allowedHeaders = "*"
+)
 public class ContratoController {
     @Autowired
     private ContratoService contratoService;
@@ -26,5 +33,15 @@ public class ContratoController {
         Contrato contrato = modelMapper.map(contratoDTO, Contrato.class);
         contrato = contratoService.saveCo(contrato);
         return modelMapper.map(contrato, ContratoDTO.class);
+    }
+
+    @GetMapping("/contratos")
+    @PreAuthorize("hasRole('ARTISTA') or hasRole('ORGANIZADOR')")
+    public List<ContratoDTO> listar() {
+        List<Contrato> contratos = contratoService.listar();
+        ModelMapper modelMapper = new ModelMapper();
+        return contratos.stream()
+                .map(contrato -> modelMapper.map(contrato, ContratoDTO.class))
+                .collect(Collectors.toList());
     }
 }

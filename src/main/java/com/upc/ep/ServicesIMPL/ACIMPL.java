@@ -6,6 +6,8 @@ import com.upc.ep.Services.ACService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ACIMPL implements ACService {
     @Autowired
@@ -14,5 +16,10 @@ public class ACIMPL implements ACService {
     @Override
     public AC saveAC(AC ac) {
         return acRepos.save(ac);
+    }
+
+    @Override
+    public List<AC> listar() {
+        return acRepos.findAll();
     }
 }

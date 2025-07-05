@@ -6,6 +6,8 @@ import com.upc.ep.Services.ContratoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ContratoIMPL implements ContratoService {
     @Autowired
@@ -14,5 +16,10 @@ public class ContratoIMPL implements ContratoService {
     @Override
     public Contrato saveCo(Contrato contrato) {
         return contratoRepos.save(contrato);
+    }
+
+    @Override
+    public List<Contrato> listar() {
+        return contratoRepos.findAll();
     }
 }
